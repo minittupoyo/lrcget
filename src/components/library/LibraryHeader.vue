@@ -67,7 +67,7 @@
       </button>
 
       <button
-        v-else-if="isDownloading && downloadedCount !== totalCount"
+        v-else-if="isDownloading && downloadedCount !== downloadTotalCount"
         class="button button-working h-full min-w-[12rem] px-2 text-xs rounded-full"
         @click.prevent="$emit('showDownloadViewer')"
       >
