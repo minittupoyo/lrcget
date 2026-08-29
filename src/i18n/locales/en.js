@@ -49,6 +49,12 @@ export default {
     foundTracks: 'Found {count} tracks',
     searchError: 'An error occurred while searching for lyrics. Please try again.',
     openError: 'An error occurred while opening the lyrics. Please try again.',
+    syncedLyrics: 'Synced Lyrics',
+    plainLyrics: 'Plain Lyrics',
+    instrumentalTrack: 'This track is instrumental',
+    noSubmittedLyrics: 'There is currently no lyrics submitted for this track',
+    copy: 'Copy',
+    copied: 'Copied',
   },
   flag: {
     confirm: 'Do you want to flag the lyrics of the song {track}?',
