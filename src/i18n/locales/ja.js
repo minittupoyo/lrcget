@@ -87,6 +87,8 @@ export default {
     syncLineTitle: '現在行を同期 (Alt+X)',
     rewindTitle: '現在行を100ms戻す (Alt+K)',
     forwardTitle: '現在行を100ms進める (Alt+J)',
+    rewindArrowTitle: '現在行を100ms戻す (Alt+左矢印)',
+    forwardArrowTitle: '現在行を100ms進める (Alt+右矢印)',
     replayTitle: '現在行を再生 (Alt+Z)',
     markInstrumental: 'インスト曲に設定',
     markInstrumentalTitle: 'この曲をインストゥルメンタルとして設定',
