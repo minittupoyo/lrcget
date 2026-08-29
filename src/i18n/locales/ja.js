@@ -49,6 +49,12 @@ export default {
     foundTracks: '{count} 曲見つかりました',
     searchError: '歌詞の検索中にエラーが発生しました。もう一度お試しください。',
     openError: '歌詞を開く際にエラーが発生しました。もう一度お試しください。',
+    syncedLyrics: '同期歌詞',
+    plainLyrics: '通常歌詞',
+    instrumentalTrack: 'この曲はインストゥルメンタルです',
+    noSubmittedLyrics: 'この曲にはまだ歌詞が投稿されていません',
+    copy: 'コピー',
+    copied: 'コピーしました',
   },
   flag: {
     confirm: '{track} の歌詞を問題として報告しますか？',
