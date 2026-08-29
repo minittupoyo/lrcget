@@ -15,12 +15,12 @@
             :disabled="!isDirty"
             @click="handlePublish"
           >
-            Publish
+            {{ $t('editor.publish') }}
           </button>
 
           <template #popper>
-            <div v-if="isSynchronizedLyrics(unifiedLyrics)" class="text-xs font-bold">Publish synchronized lyrics to LRCLIB service</div>
-            <div v-else class="text-xs font-bold">Publish plain text lyrics to LRCLIB service</div>
+            <div v-if="isSynchronizedLyrics(unifiedLyrics)" class="text-xs font-bold">{{ $t('editor.publishSynced') }}</div>
+            <div v-else class="text-xs font-bold">{{ $t('editor.publishPlain') }}</div>
           </template>
         </VTooltip>
 
@@ -28,7 +28,7 @@
           <Check class="text-lime-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">No errors detected, you can publish it now</div>
+            <div class="text-xs font-bold">{{ $t('editor.noErrors') }}</div>
           </template>
         </VTooltip>
 
@@ -36,7 +36,7 @@
           <AlertCircleOutline class="text-orange-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">Lyrics not synchronized<br />You can still publish it, but consider synchronizing it to help others</div>
+            <div class="text-xs font-bold">{{ $t('editor.notSynced') }}<br />{{ $t('editor.notSyncedHint') }}</div>
           </template>
         </VTooltip>
 
@@ -44,7 +44,7 @@
           <AlertCircle class="text-red-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">Lyrics error detected<br />Press the publish button for details</div>
+            <div class="text-xs font-bold">{{ $t('editor.errorDetected') }}<br />{{ $t('editor.errorHint') }}</div>
           </template>
         </VTooltip>
       </div>
@@ -54,12 +54,12 @@
       <div class="flex flex-col bg-brave-95 dark:bg-brave-10 rounded-lg">
         <div class="toolbar px-4 py-2 flex justify-between items-stretch gap-1">
           <div class="flex gap-1">
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Rewind line 100ms (Alt+LeftArrow)" @click="rewind100"><Minus /></button>
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Forward line 100ms (Alt+RightArrow)" @click="fastForward100"><Plus /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.rewindArrowTitle')" @click="rewind100"><Minus /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.forwardArrowTitle')" @click="fastForward100"><Plus /></button>
           </div>
 
           <div>
-            <button class="button button-warning px-3 py-1 text-lg rounded-full" title="Mark track as instrumental" @click="markAsInstrumental"><Music /> <span class="text-xs">Mark Instrumental</span></button>
+            <button class="button button-warning px-3 py-1 text-lg rounded-full" :title="$t('editor.markInstrumentalTitle')" @click="markAsInstrumental"><Music /> <span class="text-xs">{{ $t('editor.markInstrumental') }}</span></button>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <AsyncCodemirror
             v-if="shouldLoadCodeMirror"
             v-model="unifiedLyrics"
-            placeholder="Lyrics is currently empty"
+            :placeholder="$t('editor.empty')"
             class="codemirror-custom h-full outline-none"
             :autofocus="true"
             :indent-with-tab="true"
@@ -83,16 +83,16 @@
 
           <div v-else class="flex flex-col h-full items-center justify-center text-sm text-brave-40">
             <div class="animate-spin text-xl text-brave-30"><Loading /></div>
-            <div>Loading editor...</div>
+            <div>{{ $t('editor.loading') }}</div>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col w-fit self-end bg-brave-95 dark:bg-brave-10 rounded-lg">
         <div class="toolbar px-2 py-1 flex items-stretch gap-1">
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" title="Zoom out" @click="changeCodemirrorFontSizeBy(-1)"><MagnifyMinus /></button>
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full w-[4.5em]" title="Reset zoom level" @click="resetCodemirrorFontSize">{{ (codemirrorStyle.fontSize * 100).toFixed(0) }}%</button>
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" title="Zoom in" @click="changeCodemirrorFontSizeBy(+1)"><MagnifyPlus /></button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" :title="$t('editor.zoomOut')" @click="changeCodemirrorFontSizeBy(-1)"><MagnifyMinus /></button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full w-[4.5em]" :title="$t('editor.resetZoom')" @click="resetCodemirrorFontSize">{{ (codemirrorStyle.fontSize * 100).toFixed(0) }}%</button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" :title="$t('editor.zoomIn')" @click="changeCodemirrorFontSizeBy(+1)"><MagnifyPlus /></button>
         </div>
       </div>
     </div>
