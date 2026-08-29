@@ -18,10 +18,10 @@
     <div v-else class="mx-auto max-w-screen-sm">
       <div class="flex flex-col mb-8">
         <div class="text-thin text-xl">
-          Searching for <span class="font-bold">{{ keyword }}</span>
+          {{ $t('lrclib.searchingFor') }} <span class="font-bold">{{ keyword }}</span>
         </div>
         <div class="flex items-center gap-2">
-          <div class="text-sm text-brave-30 dark:text-brave-80 group-hover:text-brave-20 transition">Found {{ tracks.length }} tracks</div>
+          <div class="text-sm text-brave-30 dark:text-brave-80 group-hover:text-brave-20 transition">{{ $t('lrclib.foundTracks', { count: tracks.length }) }}</div>
         </div>
       </div>
 
@@ -33,12 +33,12 @@
               <div class="text-[0.65rem] font-bold flex gap-1">
                 <span class="bg-brave-90 text-brave-30 px-1 py-0.5 rounded">{{ humanDuration(track.duration) }}</span>
                 <template v-if="showLineCount === true">
-                  <span v-if="!!track.syncedLyrics" class="bg-blue-800 text-blue-200 px-1 py-0.5 rounded">{{ countLines(track.syncedLyrics) }} Lines</span>
-                  <span v-else-if="!!track.plainLyrics" class="bg-blue-800 text-blue-200 px-1 py-0.5 rounded">{{ countLines(track.plainLyrics) }} Lines</span>
+                  <span v-if="!!track.syncedLyrics" class="bg-blue-800 text-blue-200 px-1 py-0.5 rounded">{{ $t('lyricsSearch.lines', { count: countLines(track.syncedLyrics) }) }}</span>
+                  <span v-else-if="!!track.plainLyrics" class="bg-blue-800 text-blue-200 px-1 py-0.5 rounded">{{ $t('lyricsSearch.lines', { count: countLines(track.plainLyrics) }) }}</span>
                 </template>
-                <span v-if="!!track.syncedLyrics" class="bg-green-800 text-green-200 px-1 py-0.5 rounded">Synced</span>
-                <span v-else-if="!!track.plainLyrics" class="bg-gray-800 text-gray-200 px-1 py-0.5 rounded">Plain</span>
-                <span v-else-if="!!track.instrumental" class="bg-gray-300 text-gray-600 px-1 py-0.5 rounded">Instrumental</span>
+                <span v-if="!!track.syncedLyrics" class="bg-green-800 text-green-200 px-1 py-0.5 rounded">{{ $t('lyricsSearch.synced') }}</span>
+                <span v-else-if="!!track.plainLyrics" class="bg-gray-800 text-gray-200 px-1 py-0.5 rounded">{{ $t('lyricsSearch.plain') }}</span>
+                <span v-else-if="!!track.instrumental" class="bg-gray-300 text-gray-600 px-1 py-0.5 rounded">{{ $t('lyricsSearch.instrumental') }}</span>
               </div>
             </div>
             <div class="text-sm text-brave-35 dark:text-brave-80">{{ track.albumName }} - {{ track.artistName }}</div>
@@ -89,6 +89,7 @@ import EditLyrics from './EditLyrics.vue'
 import PreviewLyrics from './PreviewLyrics.vue'
 import FlagLyrics from './FlagLyrics.vue'
 import { useModal } from 'vue-final-modal'
+import { t } from '@/i18n'
 
 const toast = useToast()
 
@@ -150,8 +151,7 @@ onMounted(async () => {
   try {
     tracks.value = await invoke('search_lyrics', { title: '', albumName: '', artistName: '', q: props.keyword })
   } catch (error) {
-    toast.error('An error occurred while searching for lyrics. Please try again.')
-
+    toast.error(t('lrclib.searchError'))
     console.error(error)
   } finally {
     loading.value = false
@@ -165,7 +165,7 @@ const setShowingTrack = async (track) => {
     showingTrack.value = refreshedTrack
     openPreviewModal()
   } catch (error) {
-    toast.error('An error occurred while opening the lyrics. Please try again.')
+    toast.error(t('lrclib.openError'))
     console.error(error)
   } finally {
     isOpeningTrack.value = false
@@ -180,7 +180,7 @@ const setEditingTrack = async (track) => {
     openEditLyricsModal()
     isOpeningTrack.value = false
   } catch (error) {
-    toast.error('An error occurred while opening the lyrics. Please try again.')
+    toast.error(t('lrclib.openError'))
     console.error(error)
   } finally {
     isOpeningTrack.value = false
