@@ -15,12 +15,12 @@
             :disabled="!isDirty"
             @click="saveLyrics"
           >
-            Save
+            {{ $t('editor.save') }}
           </button>
 
           <template #popper>
             <div class="text-xs font-bold">
-              Save lyrics
+              {{ $t('editor.saveLyrics') }}
               <span class="text-[0.65rem] text-brave-30 bg-brave-95 px-1 rounded-full">Ctrl+S</span>
             </div>
           </template>
@@ -33,12 +33,12 @@
             :disabled="isDirty"
             @click="handlePublish"
           >
-            Publish
+            {{ $t('editor.publish') }}
           </button>
 
           <template #popper>
-            <div v-if="isSynchronizedLyrics(unifiedLyrics)" class="text-xs font-bold">Publish synchronized lyrics to LRCLIB service</div>
-            <div v-else class="text-xs font-bold">Publish plain text lyrics to LRCLIB service</div>
+            <div v-if="isSynchronizedLyrics(unifiedLyrics)" class="text-xs font-bold">{{ $t('editor.publishSynced') }}</div>
+            <div v-else class="text-xs font-bold">{{ $t('editor.publishPlain') }}</div>
           </template>
         </VTooltip>
 
@@ -46,7 +46,7 @@
           <Check class="text-lime-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">No errors detected, you can publish it now</div>
+            <div class="text-xs font-bold">{{ $t('editor.noErrors') }}</div>
           </template>
         </VTooltip>
 
@@ -54,7 +54,7 @@
           <AlertCircleOutline class="text-orange-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">Lyrics not synchronized<br />You can still publish it, but consider synchronizing it to help others</div>
+            <div class="text-xs font-bold">{{ $t('editor.notSynchronized') }}<br />{{ $t('editor.synchronizeHint') }}</div>
           </template>
         </VTooltip>
 
@@ -62,7 +62,7 @@
           <AlertCircle class="text-red-500 text-2xl block" />
 
           <template #popper>
-            <div class="text-xs font-bold">Lyrics error detected<br />Press the publish button for details</div>
+            <div class="text-xs font-bold">{{ $t('editor.errorDetected') }}<br />{{ $t('editor.publishForDetails') }}</div>
           </template>
         </VTooltip>
       </div>
@@ -72,15 +72,15 @@
       <div class="toolbar flex flex-col bg-brave-95 dark:bg-brave-10 rounded-lg">
         <div class="px-4 py-2 flex justify-between items-stretch gap-1">
           <div class="flex gap-1">
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Sync line & move next (Alt+Enter)" @click="syncLine"><EqualEnter /> <span class="text-xs">Sync Line & Move Next</span></button>
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Sync line (Alt+X)" @click="syncLine(false)"><Equal /></button>
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Rewind line 100ms (Alt+K)" @click="rewind100"><Minus /></button>
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Forward line 100ms (Alt+J)" @click="fastForward100"><Plus /></button>
-            <button class="button button-normal px-3 py-1 text-lg rounded-full" title="Replay line (Alt+Z)" @click="repeatLine"><MotionPlay /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.syncAndNextTitle')" @click="syncLine"><EqualEnter /> <span class="text-xs">{{ $t('editor.syncAndNext') }}</span></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.syncLineTitle')" @click="syncLine(false)"><Equal /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.rewindTitle')" @click="rewind100"><Minus /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.forwardTitle')" @click="fastForward100"><Plus /></button>
+            <button class="button button-normal px-3 py-1 text-lg rounded-full" :title="$t('editor.replayTitle')" @click="repeatLine"><MotionPlay /></button>
           </div>
 
           <div>
-            <button class="button button-warning px-3 py-1 text-lg rounded-full" title="Mark track as instrumental" @click="markAsInstrumental"><Music /> <span class="text-xs">Mark Instrumental</span></button>
+            <button class="button button-warning px-3 py-1 text-lg rounded-full" :title="$t('editor.markInstrumentalTitle')" @click="markAsInstrumental"><Music /> <span class="text-xs">{{ $t('editor.markInstrumental') }}</span></button>
           </div>
         </div>
         <div class="w-full border-b border-brave-90 dark:border-brave-20"></div>
@@ -99,7 +99,7 @@
           <AsyncCodemirror
             v-if="shouldLoadCodeMirror"
             v-model="unifiedLyrics"
-            placeholder="Lyrics is currently empty"
+            :placeholder="$t('editor.empty')"
             class="codemirror-custom h-full outline-none"
             :autofocus="true"
             :indent-with-tab="true"
@@ -112,16 +112,16 @@
 
           <div v-else class="flex flex-col h-full items-center justify-center text-sm text-brave-40">
             <div class="animate-spin text-xl text-brave-30"><Loading /></div>
-            <div>Loading editor...</div>
+            <div>{{ $t('editor.loading') }}</div>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col w-fit self-end bg-brave-95 dark:bg-brave-10 rounded-lg">
         <div class="toolbar px-2 py-1 flex items-stretch gap-1">
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" title="Zoom out" @click="changeCodemirrorFontSizeBy(-1)"><MagnifyMinus /></button>
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full w-[4.5em]" title="Reset zoom level" @click="resetCodemirrorFontSize">{{ (codemirrorStyle.fontSize * 100).toFixed(0) }}%</button>
-          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" title="Zoom in" @click="changeCodemirrorFontSizeBy(+1)"><MagnifyPlus /></button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" :title="$t('editor.zoomOut')" @click="changeCodemirrorFontSizeBy(-1)"><MagnifyMinus /></button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full w-[4.5em]" :title="$t('editor.resetZoom')" @click="resetCodemirrorFontSize">{{ (codemirrorStyle.fontSize * 100).toFixed(0) }}%</button>
+          <button class="button button-normal px-1.5 py-0.5 text-sm rounded-full" :title="$t('editor.zoomIn')" @click="changeCodemirrorFontSizeBy(+1)"><MagnifyPlus /></button>
         </div>
       </div>
     </div>
@@ -290,7 +290,6 @@ const handleWheel = (payload) => {
 const changeCodemirrorFontSizeBy = (offset) => {
   if (!shouldLoadCodeMirror) return;
 
-
   let newFontSize = codemirrorStyle.value.fontSize + offset * 0.1;
   if (newFontSize < 0.4) newFontSize = 0.4;
 
@@ -343,7 +342,6 @@ const syncLine = (moveNext = true) => {
     const newLine = view.state.doc.lineAt(view.state.selection.main.head)
     let targetLineNumber = newLine.number
 
-    // Keep checking subsequent lines until we find a non-empty one or reach the end
     while (targetLineNumber + 1 <= view.state.doc.lines) {
       const nextLine = view.state.doc.line(targetLineNumber + 1)
       if (nextLine.text.trim() !== '') {
@@ -352,7 +350,6 @@ const syncLine = (moveNext = true) => {
       targetLineNumber++
     }
 
-    // Move to target line if it exists
     if (targetLineNumber + 1 <= view.state.doc.lines) {
       const targetLine = view.state.doc.line(targetLineNumber + 1)
       view.dispatch({
@@ -413,7 +410,6 @@ const rewind100 = () => {
     view.focus()
     lyricsUpdated(view.state.doc.toString())
 
-    // Seek to the timestamp of the first changed line
     const firstChangedLine = view.state.doc.lineAt(changes[0].from)
     const firstParsed = parseLine(firstChangedLine.text)
     if (firstParsed.type === 'TIME') {
@@ -455,7 +451,6 @@ const fastForward100 = () => {
     view.focus()
     lyricsUpdated(view.state.doc.toString())
 
-    // Seek to the timestamp of the first changed line
     const firstChangedLine = view.state.doc.lineAt(changes[0].from)
     const firstParsed = parseLine(firstChangedLine.text)
     if (firstParsed.type === 'TIME') {
@@ -600,7 +595,6 @@ watch(cmContainer, () => {
   if (cmContainer.value) {
     setTimeout(() => shouldLoadCodeMirror.value = true, 100)
 
-    // Monitor the window size and dynamically adjust the height of the CodeMirror editor accordingly
     window.addEventListener('resize', handleResize)
     handleResize()
     return () => window.removeEventListener('resize', handleResize)
