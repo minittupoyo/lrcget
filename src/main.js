@@ -11,12 +11,15 @@ import './style.css'
 
 import { VueFinalModal } from 'vue-final-modal'
 import BaseModal from '@/components/common/BaseModal.vue'
+import { installI18n } from '@/i18n/index.js'
 
 const vfm = createVfm()
 
 const app = createApp(App)
   .component('VueFinalModal', VueFinalModal)
   .component('BaseModal', BaseModal)
+
+installI18n(app)
 
 app.use(Toast, {
   position: POSITION.BOTTOM_RIGHT,
