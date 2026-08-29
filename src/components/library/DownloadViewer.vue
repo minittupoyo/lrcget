@@ -1,18 +1,17 @@
 <template>
   <BaseModal
-    title="Configuration"
     @close="checkAndClose"
     content-class="w-full h-[80vh] max-w-screen-md"
     body-class="flex flex-col h-full min-h-0 justify-between gap-6"
-    :title="isFinished ? 'Downloaded' : 'Downloading'"
+    :title="isFinished ? $t('download.downloaded') : $t('download.downloading')"
   >
     <div class="flex flex-col items-center justify-center gap-1">
       <div class="w-full bg-brave-95 h-1 rounded">
         <div class="bg-brave-30 h-1" :style="{ width: progressWidth }"></div>
       </div>
       <div class="text-[0.7rem] text-brave-30/60 dark:text-brave-95/60 flex gap-3">
-        <span>{{ successCount }} FOUND</span>
-        <span>{{ failureCount }} NOT FOUND</span>
+        <span>{{ $t('download.found', { count: successCount }) }}</span>
+        <span>{{ $t('download.notFound', { count: failureCount }) }}</span>
       </div>
     </div>
 
@@ -29,8 +28,8 @@
 
     <template #footer>
       <div class="flex-none flex justify-center">
-        <button v-if="isFinished" class="button button-primary px-8 py-2 rounded-full" @click="checkAndClose">Finish</button>
-        <button v-else class="button button-normal px-8 py-2 rounded-full" @click="handleStop">Stop</button>
+        <button v-if="isFinished" class="button button-primary px-8 py-2 rounded-full" @click="checkAndClose">{{ $t('download.finish') }}</button>
+        <button v-else class="button button-normal px-8 py-2 rounded-full" @click="handleStop">{{ $t('download.stop') }}</button>
       </div>
     </template>
   </BaseModal>
@@ -55,20 +54,12 @@ const {
 const emit = defineEmits(['close'])
 
 const progressWidth = computed(() => {
-  if (!downloadQueue.value) {
-    return '100%'
-  }
-
-  if (downloadProgress.value > 1.0) {
-    return '100%'
-  }
-
+  if (!downloadQueue.value) return '100%'
+  if (downloadProgress.value > 1.0) return '100%'
   return `${downloadProgress.value * 100}%`
 })
 
-const isFinished = computed(() => {
-  return downloadedCount.value >= totalCount.value
-})
+const isFinished = computed(() => downloadedCount.value >= totalCount.value)
 
 const handleStop = () => {
   stopDownloading()
@@ -76,12 +67,8 @@ const handleStop = () => {
 }
 
 const checkAndClose = () => {
-  if (isFinished.value) {
-    startOver()
-    emit('close')
-  } else {
-    emit('close')
-  }
+  if (isFinished.value) startOver()
+  emit('close')
 }
 
 onUnmounted(() => {
