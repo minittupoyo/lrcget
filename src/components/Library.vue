@@ -11,21 +11,10 @@
     />
 
     <div class="relative grow overflow-hidden">
-      <TrackList
-        :isActive="activeTab === 'tracks'"
-      />
-
-      <AlbumList
-        :isActive="activeTab === 'albums'"
-      />
-
-      <ArtistList
-        :isActive="activeTab === 'artists'"
-      />
-
-      <MyLrclib
-        :isActive="activeTab === 'my-lrclib'"
-      />
+      <TrackList :isActive="activeTab === 'tracks'" />
+      <AlbumList :isActive="activeTab === 'albums'" />
+      <ArtistList :isActive="activeTab === 'artists'" />
+      <MyLrclib :isActive="activeTab === 'my-lrclib'" />
     </div>
 
     <NowPlaying class="flex-none" />
@@ -34,12 +23,11 @@
   <div v-else class="flex flex-col justify-center items-center w-full h-full">
     <div class="animate-spin text-xl text-brave-30"><Loading /></div>
     <div v-if="isInitializing" class="flex flex-col items-center justify-center text-sm text-brave-40">
-      <div>Initializing library...</div>
-      <div v-if="initializeProgress">{{ initializeProgress.filesScanned }}/{{ initializeProgress.filesCount }} files scanned</div>
+      <div>{{ $t('library.initializing') }}</div>
+      <div v-if="initializeProgress">{{ $t('library.filesScanned', { scanned: initializeProgress.filesScanned, total: initializeProgress.filesCount }) }}</div>
     </div>
-
     <div v-else class="flex flex-col items-center justify-center text-sm text-brave-40">
-      <div>Loading library...</div>
+      <div>{{ $t('library.loading') }}</div>
     </div>
   </div>
 </template>
@@ -49,7 +37,6 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { invoke } from '@tauri-apps/api/core'
 import { listen } from '@tauri-apps/api/event'
 import { Loading } from 'mdue'
-import _ from 'lodash'
 import LibraryHeader from './library/LibraryHeader.vue'
 import NowPlaying from './NowPlaying.vue'
 import TrackList from './library/TrackList.vue'
@@ -61,65 +48,31 @@ import Config from './library/Config.vue'
 import About from './About.vue'
 import { useToast } from 'vue-toastification'
 import { useModal } from 'vue-final-modal'
+import { t } from '@/i18n/index.js'
 
 const toast = useToast()
 const emit = defineEmits(['uninitializeLibrary'])
-
 const isLoading = ref(true)
 const isInitializing = ref(false)
 const initializeProgress = ref(null)
 const activeTab = ref('tracks')
 
-const { open: openAboutModal, close: closeAboutModal } = useModal({
-  component: About,
-  attrs: {
-    onClose() {
-      closeAboutModal()
-    }
-  },
-})
+const { open: openAboutModal, close: closeAboutModal } = useModal({ component: About, attrs: { onClose() { closeAboutModal() } } })
+const { open: openConfigModal, close: closeConfigModal } = useModal({ component: Config, attrs: { onClose() { closeConfigModal() }, onRefreshLibrary() { refreshLibrary() }, onUninitializeLibrary() { emit('uninitializeLibrary') } } })
+const { open: openDownloadViewer, close: closeDownloadViewer } = useModal({ component: DownloadViewer, attrs: { onClose() { closeDownloadViewer() } } })
 
-const { open: openConfigModal, close: closeConfigModal } = useModal({
-  component: Config,
-  attrs: {
-    onClose() {
-      closeConfigModal()
-    },
-    onRefreshLibrary() {
-      refreshLibrary()
-    },
-    onUninitializeLibrary() {
-      emit('uninitializeLibrary')
-    }
-  },
-})
-
-const { open: openDownloadViewer, close: closeDownloadViewer } = useModal({
-  component: DownloadViewer,
-  attrs: {
-    onClose() {
-      closeDownloadViewer()
-    }
-  },
-})
-
-const changeActiveTab = (tab) => {
-  activeTab.value = tab
-}
+const changeActiveTab = (tab) => { activeTab.value = tab }
 
 const refreshLibrary = async () => {
   isLoading.value = true
   isInitializing.value = true
-
   try {
-    listen('initialize-progress', async (event) => {
-      initializeProgress.value = event.payload
-    })
+    listen('initialize-progress', async (event) => { initializeProgress.value = event.payload })
     await invoke('refresh_library')
     isInitializing.value = false
   } catch (error) {
     console.error(error)
-    toast.error(`Unknown error happened when initializing the library. Error: ${error}`)
+    toast.error(t('library.initError', { error }))
   } finally {
     isLoading.value = false
     isInitializing.value = false
@@ -131,16 +84,13 @@ onMounted(async () => {
   if (!init) {
     isLoading.value = true
     isInitializing.value = true
-
     try {
-      listen('initialize-progress', async (event) => {
-        initializeProgress.value = event.payload
-      })
+      listen('initialize-progress', async (event) => { initializeProgress.value = event.payload })
       await invoke('initialize_library')
       isInitializing.value = false
     } catch (error) {
       console.error(error)
-      toast.error(`Unknown error happened when initializing the library. Error: ${error}`)
+      toast.error(t('library.initError', { error }))
     } finally {
       isLoading.value = false
       isInitializing.value = false
