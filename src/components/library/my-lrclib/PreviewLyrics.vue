@@ -15,7 +15,7 @@
             'hover:bg-brave-90 dark:hover:bg-brave-10': lyricsType !== 'synced'
            }"
            @click="lyricsType = 'synced'"
-          >Synced Lyrics</button>
+          >{{ $t('lrclib.syncedLyrics') }}</button>
           <button
            class="button text-xs w-36 px-3 py-1.5 rounded-full"
            :class="{
@@ -23,7 +23,7 @@
             'hover:bg-brave-90 dark:hover:bg-brave-10': lyricsType === 'synced'
            }"
            @click="lyricsType = 'plain'"
-          >Plain Lyrics</button>
+          >{{ $t('lrclib.plainLyrics') }}</button>
         </div>
       </div>
 
@@ -33,11 +33,11 @@
     <LyricsPanel v-else-if="props.track.plainLyrics" :text="props.track.plainLyrics" />
 
     <div v-else-if="props.track.instrumental" class="grow rounded bg-brave-99 text-brave-30 dark:bg-brave-1 dark:text-brave-95 whitespace-pre-line p-4 overflow-scroll italic flex items-center justify-center">
-      This track is instrumental
+      {{ $t('lrclib.instrumentalTrack') }}
     </div>
 
     <div v-else class="grow rounded bg-brave-99 text-brave-30 dark:bg-brave-1 dark:text-brave-95 whitespace-pre-line p-4 overflow-scroll italic flex items-center justify-center">
-      There is currently no lyrics submitted for this track
+      {{ $t('lrclib.noSubmittedLyrics') }}
     </div>
   </BaseModal>
 </template>
