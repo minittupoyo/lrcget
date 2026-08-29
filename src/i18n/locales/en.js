@@ -87,6 +87,8 @@ export default {
     syncLineTitle: 'Sync line (Alt+X)',
     rewindTitle: 'Rewind line 100ms (Alt+K)',
     forwardTitle: 'Forward line 100ms (Alt+J)',
+    rewindArrowTitle: 'Rewind line 100ms (Alt+LeftArrow)',
+    forwardArrowTitle: 'Forward line 100ms (Alt+RightArrow)',
     replayTitle: 'Replay line (Alt+Z)',
     markInstrumental: 'Mark Instrumental',
     markInstrumentalTitle: 'Mark track as instrumental',
