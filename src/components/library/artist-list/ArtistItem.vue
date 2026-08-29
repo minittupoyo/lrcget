@@ -6,7 +6,7 @@
       <div class="font-bold text-sm text-brave-20 dark:text-brave-95">{{ artist.name }}</div>
 
       <div class="flex items-center gap-2">
-        <div class="text-sm text-brave-30 group-hover:text-brave-20 transition dark:text-brave-90 dark:group-hover:text-brave-90">{{ artist.tracks_count }} tracks</div>
+        <div class="text-sm text-brave-30 group-hover:text-brave-20 transition dark:text-brave-90 dark:group-hover:text-brave-90">{{ $t('library.trackCount', { count: artist.tracks_count }) }}</div>
       </div>
     </div>
 
