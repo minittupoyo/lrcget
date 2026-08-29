@@ -3,7 +3,7 @@
     <!--<img src="@/assets/lrclib.png" class="w-20 h-20" />-->
 
     <div class="font-bold text-xs text-brave-30 dark:text-brave-90 select-none cursor-default">
-      Search with LRCLIB instance:
+      {{ $t('lrclib.instanceLabel') }}
       <span class="text-brave-30 dark:text-brave-90 rounded-full px-2 py-1 bg-brave-95 dark:bg-brave-5"
       >{{ lrclibInstance }}</span>
     </div>
@@ -16,7 +16,7 @@
         v-model="keyword"
         class="outline-none grow h-12 px-6 bg-brave-98 dark:bg-brave-5 placeholder:text-brave-30/30
          text-brave-20 dark:text-brave-95 dark:placeholder:text-brave-70/30"
-        placeholder="Type a song title, album, or artist to find lyrics..."
+        :placeholder="$t('lrclib.searchPlaceholder')"
         @focus="inputActive = true"
         @blur="inputActive = false"
         autofocus
