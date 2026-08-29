@@ -18,7 +18,7 @@
             {{ artist.name }}
           </div>
           <div class="flex items-center gap-2">
-            <div class="text-sm text-brave-30 group-hover:text-brave-20 transition dark:text-white">{{ artist.tracks_count }} tracks</div>
+            <div class="text-sm text-brave-30 group-hover:text-brave-20 transition dark:text-white">{{ $t('library.trackCount', { count: artist.tracks_count }) }}</div>
           </div>
         </div>
 
@@ -26,7 +26,7 @@
           <button class="button button-normal px-4 py-1.5 text-xs rounded-full" @click.prevent="downloadArtistLyrics">
             <div class="text-sm"><DownloadMultiple /></div>
             <span>
-              Download artist lyrics
+              {{ $t('library.downloadArtistLyrics') }}
             </span>
           </button>
         </div>
@@ -36,9 +36,9 @@
         <div class="w-full flex">
           <div class="text-xs text-brave-30/70 font-bold flex w-full dark:text-brave-95">
             <div class="text-right flex-none w-[5%] p-1 pr-2">#</div>
-            <div class="text-left flex-none w-[60%] p-1">Track</div> <!-- Adjusted width percentage -->
-            <div class="text-right flex-none w-[10%] p-1">Duration</div>
-            <div class="text-center flex-none w-[10%] p-1">Lyrics</div>
+            <div class="text-left flex-none w-[60%] p-1">{{ $t('library.track') }}</div> <!-- Adjusted width percentage -->
+            <div class="text-right flex-none w-[10%] p-1">{{ $t('library.duration') }}</div>
+            <div class="text-center flex-none w-[10%] p-1">{{ $t('library.lyrics') }}</div>
             <div class="text-right flex-none w-[15%] p-1"></div>
           </div>
         </div>
